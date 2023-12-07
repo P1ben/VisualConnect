@@ -1,0 +1,342 @@
+﻿<Window x:Class="Viscon.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Viscon"
+        mc:Ignorable="d"
+        
+        Title="Viscon"  MinHeight="600" MinWidth="900" Height="600" Width="1100"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+     TextElement.FontWeight="Regular"
+     TextElement.FontSize="13"
+     TextOptions.TextFormattingMode="Ideal"
+     TextOptions.TextRenderingMode="Auto"
+     Background="#FF1A1A1A"
+     FontFamily="{DynamicResource MaIterialDesignFont}" >
+    <Window.Resources>
+        <Style x:Key="adatok" TargetType="TextBox">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0,0,0,5"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="FontFamily" Value="sans-serif"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property ="Width" Value="200"/>
+            <Setter Property ="FontSize" Value="20"/>
+        </Style>
+        <Style x:Key="placeholder" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="FontFamily" Value="sans-serif"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Foreground" Value="LightGray"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property ="Width" Value="200"/>
+            <Setter Property ="FontSize" Value="20"/>
+        </Style>
+        <Style x:Key="CheckBoxTemplate" TargetType="CheckBox">
+            <Setter Property="SnapsToDevicePixels" Value="False" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <BulletDecorator Background="Transparent" VerticalAlignment="Center">
+                            <BulletDecorator.Bullet>
+                                <Border x:Name="Border" CornerRadius="5" Width="32" Height="32"  Background="Transparent"  BorderBrush="White" BorderThickness="3" ClipToBounds="True">
+                                    <Grid>
+                                        <Path x:Name="CheckMark" Width="20" Height="18" HorizontalAlignment="Center" VerticalAlignment="Center" Data="F1 M 0.468732,4.66838L 3.03345,7.95443L 7.28127,0.420569"  Stretch="Fill" Stroke="White" StrokeEndLineCap="Round" StrokeStartLineCap="Round"  StrokeThickness="5" />
+                                        <Grid Width="30" HorizontalAlignment="Right" Background="Transparent" x:Name="hider"></Grid>
+                                    </Grid>
+                                </Border>
+                            </BulletDecorator.Bullet>
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Left" RecognizesAccessKey="True"/>
+                        </BulletDecorator>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="false">
+                                <Setter TargetName="CheckMark" Property="Visibility" Value="Collapsed" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="true">
+                                <Setter TargetName="CheckMark" Property="Visibility" Value="Visible" />
+
+                                <Setter TargetName="Border" Property="Background" Value="#FF1F1F1F"/>
+                                <Setter TargetName="hider" Property="Background" Value="#FF1F1F1F"/>
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="00:00:00.5" From="30" To="0" Storyboard.TargetName="hider" Storyboard.TargetProperty="Width" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                            </Trigger>
+                            
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="BorderBrush" Value="White" />
+                                <Setter TargetName="CheckMark" Property="Stroke" Value="White" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Storyboard x:Key="MenuIn">
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" Storyboard.TargetName="sideMenu" >
+                <SplineThicknessKeyFrame KeyTime="0" Value="-200, 50,0,0" />
+                <SplineThicknessKeyFrame KeyTime="00:00:0.5" Value="0, 50,0,0" />
+            </ThicknessAnimationUsingKeyFrames>
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" Storyboard.TargetName="header" >
+                <SplineThicknessKeyFrame KeyTime="0" Value="0, -50,0,0" />
+                <SplineThicknessKeyFrame KeyTime="00:00:0.5" Value="0, 0,0,0" />
+            </ThicknessAnimationUsingKeyFrames>
+        </Storyboard>
+
+    </Window.Resources>
+    <Grid >
+        <Border x:Name="menu"  Width="350" Height="370">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF1F1F1F"/>
+                    <GradientStop Color="#FF752323" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid>
+                <TextBlock Text="Create new file..." Margin="20" Grid.Column="1" FontSize="20" HorizontalAlignment="Center"  Foreground="White" VerticalAlignment="Top"></TextBlock>
+
+                <TextBlock Name="n" Style="{StaticResource placeholder}" Margin="21,70,20,20" Text="File name" />
+                <TextBox Name="nev" Style="{StaticResource adatok}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Margin="20,70,20,20"/>
+                <Button Name="create" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="20,180,20,20" Width="100" Height="35" Background="Black" Click="create_Click" >
+                    <TextBlock Text="Create" Foreground="White" FontFamily="sans-serif" FontSize="20"/>
+                </Button>
+                <ComboBox SelectedIndex="0" Name="type" Foreground="White" Grid.Column="1" FontSize="20" Width="100" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,120,0,0">
+
+                    <ComboBoxItem Foreground="Black" Tag="0" Content="char"/>
+                    <ComboBoxItem Foreground="Black" Tag="1" Content="int"/>
+                    <ComboBoxItem Foreground="Black" Tag="2" Content="float"/>
+                    <ComboBoxItem Foreground="Black" Tag="3" Content="double"/>
+                    <ComboBoxItem Foreground="Black" Tag="4" Content="long"/>
+                    <ComboBoxItem Foreground="Black" Tag="5" Content="short"/>
+                    <ComboBoxItem Foreground="Black" Tag="6" Content="bool"/>
+                    <ComboBoxItem Foreground="Black" Tag="7" Content="string"/>
+                    <ComboBoxItem Foreground="Black" Tag="8" Content="void"/>
+
+                </ComboBox>
+                <TextBlock Text="...or load existing" Margin="20,250,20,20" Grid.Column="1" FontSize="20" HorizontalAlignment="Center"  Foreground="White" VerticalAlignment="Top"></TextBlock>
+                <Button Name="load" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="20,300,20,20" Width="100" Height="35" Background="Black" Click="load_Click" >
+                    <TextBlock Text="Load" Foreground="White" FontFamily="sans-serif" FontSize="20"/>
+                </Button>
+            </Grid>
+        </Border>
+        <Grid Panel.ZIndex="200" Name="sideMenu" Width="200" Visibility="Hidden" HorizontalAlignment="Left" Margin="0, 50,0,0">
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF1F1F1F"/>
+                    <GradientStop Color="#FF752323" Offset="1"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50*" />
+                <RowDefinition Height="50*" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid x:Name="toolbar_title" VerticalAlignment="Top">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50*" />
+                            <ColumnDefinition Width="100*" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon Foreground="White" Kind="Tools" VerticalAlignment="Center" Height="40" Width="50" Grid.Column="0"/>
+                        <TextBlock Text="ToolBar" Grid.Column="1" FontSize="20"  Foreground="White" VerticalAlignment="Center"></TextBlock>
+                    </Grid>
+                </Grid>
+                <Border Margin="0,40,0,0" BorderThickness="0,0,1,1" BorderBrush="#FF1F1F1F">
+                    <ScrollViewer x:Name="tool_list">
+                        <!-- Tools ide! -->
+                        <Menu Width="200">
+                            <MenuItem x:Name="addBegin" Foreground="White" Height="40" Width="200" Click="addBegin_Click"  Cursor="Hand" >
+                                <MenuItem.Icon>
+                                    <materialDesign:PackIcon  Foreground="White" Height="40" Width="30" Kind="RayStart" Margin="-5,0,-50,0" VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                </MenuItem.Icon>
+                                <MenuItem.Header>
+                                    <TextBlock  Foreground="White" FontSize="18" Text="Begin" VerticalAlignment="Center" Margin="-10,0,-50,0"/>
+                                </MenuItem.Header>
+                            </MenuItem>
+
+                            <MenuItem x:Name="addVariable" Foreground="White" Height="40" Width="200" Click="addVariable_Click" Cursor="Hand" >
+                                <MenuItem.Icon>
+                                    <materialDesign:PackIcon  Foreground="White" Height="40" Width="30" Kind="ApplicationVariableOutline" Margin="-5,0,-50,0" VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                </MenuItem.Icon>
+                                <MenuItem.Header>
+                                    <TextBlock  Foreground="White" FontSize="18" Text=" Variable" VerticalAlignment="Center" Margin="-10,0,-50,0"/>
+                                </MenuItem.Header>
+                            </MenuItem>
+                            <MenuItem x:Name="addBranch" Foreground="White" Height="40" Width="200" Click="addBranch_click" Cursor="Hand" >
+                                <MenuItem.Icon>
+                                    <materialDesign:PackIcon  Foreground="White" Height="35" Width="30" Kind="SourceBranch" Margin="-5,-10,-50,-10" VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                </MenuItem.Icon>
+                                <MenuItem.Header>
+                                    <TextBlock  Foreground="White" FontSize="18" Text="Branch" VerticalAlignment="Center" Margin="-10,0,-50,0"/>
+                                </MenuItem.Header>
+                            </MenuItem>
+                            <MenuItem x:Name="addAssignment" Foreground="White" Height="40" Width="200" Click="addAssignment_Click" Cursor="Hand" >
+                                <MenuItem.Icon>
+                                    <materialDesign:PackIcon  Foreground="White" Height="35" Width="30" Kind="SetMerge" Margin="-5,-10,-50,-10" VerticalAlignment="Center" />
+                                </MenuItem.Icon>
+                                <MenuItem.Header>
+                                    <TextBlock  Foreground="White" FontSize="18" Text="Assignment" VerticalAlignment="Center" Margin="-10,0,-100,0"/>
+                                </MenuItem.Header>
+                            </MenuItem>
+                            <MenuItem x:Name="addFunction" Foreground="White" Height="40" Width="200" Click="addFunction_Click" Cursor="Hand" >
+                                <MenuItem.Icon>
+                                    <materialDesign:PackIcon  Foreground="White" Height="35" Width="30" Kind="Robot" Margin="-5,-10,-50,-10" VerticalAlignment="Center" />
+                                </MenuItem.Icon>
+                                <MenuItem.Header>
+                                    <TextBlock  Foreground="White" FontSize="18" Text="Function" VerticalAlignment="Center" Margin="-10,0,-50,0"/>
+                                </MenuItem.Header>
+                            </MenuItem>
+                            <MenuItem x:Name="addAritmetic" Foreground="White" Height="40" Width="200" Click="addAritmetic_Click" Cursor="Hand" >
+                                <MenuItem.Icon>
+                                    <materialDesign:PackIcon  Foreground="White" Height="35" Width="30" Kind="Calculator" Margin="-5,-10,-50,-10" VerticalAlignment="Center" />
+                                </MenuItem.Icon>
+                                <MenuItem.Header>
+                                    <TextBlock  Foreground="White" FontSize="18" Text="Aritmetic" VerticalAlignment="Center" Margin="-10,0,-50,0"/>
+                                </MenuItem.Header>
+                            </MenuItem>
+                            <MenuItem x:Name="addCompareBox" Foreground="White" Height="40" Width="200" Click="addCompareBox_Click" Cursor="Hand" >
+                                <MenuItem.Icon>
+                                    <materialDesign:PackIcon  Foreground="White" Height="35" Width="30" Kind="Compare" Margin="-5,-10,-50,-10" VerticalAlignment="Center" />
+                                </MenuItem.Icon>
+                                <MenuItem.Header>
+                                    <TextBlock  Foreground="White" FontSize="18" Text="Compare box" VerticalAlignment="Center" Margin="-10,0,-50,0"/>
+                                </MenuItem.Header>
+                            </MenuItem>
+                            <MenuItem x:Name="addLogicConn" Foreground="White" Height="40" Width="200" Click="addLogicConn_Click" Cursor="Hand" >
+                                <MenuItem.Icon>
+                                    <materialDesign:PackIcon  Foreground="White" Height="35" Width="30" Kind="LogicGateOr" Margin="-5,-10,-50,-10" VerticalAlignment="Center" />
+                                </MenuItem.Icon>
+                                <MenuItem.Header>
+                                    <TextBlock  Foreground="White" FontSize="18" Text="Logic connection" VerticalAlignment="Center" Margin="-10,0,-50,0"/>
+                                </MenuItem.Header>
+                            </MenuItem>
+                            <MenuItem x:Name="addLoop" Foreground="White" Height="40" Width="200" Click="addLoop_Click" Cursor="Hand" >
+                                <MenuItem.Icon>
+                                    <materialDesign:PackIcon  Foreground="White" Height="35" Width="30" Kind="Loop" Margin="-5,-10,-50,-10" VerticalAlignment="Center" />
+                                </MenuItem.Icon>
+                                <MenuItem.Header>
+                                    <TextBlock  Foreground="White" FontSize="18" Text="Loop" VerticalAlignment="Center" Margin="-10,0,-50,0"/>
+                                </MenuItem.Header>
+                            </MenuItem>
+                            <MenuItem x:Name="addEnd" Foreground="White" Height="40" Width="200" Click="addEnd_Click" Cursor="Hand" >
+                                <MenuItem.Icon>
+                                    <materialDesign:PackIcon  Foreground="White" Height="40" Width="30" Kind="RayEnd" Margin="-5,0,-50,0" VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                </MenuItem.Icon>
+                                <MenuItem.Header>
+                                    <TextBlock  Foreground="White" FontSize="18" Text="End" VerticalAlignment="Center" Margin="-10,0,-50,0"/>
+                                </MenuItem.Header>
+                            </MenuItem>
+                            <MenuItem x:Name="addReturnNode" Foreground="White" Height="40" Width="200" Click="addReturnNode_Click"  Cursor="Hand" >
+                                <MenuItem.Icon>
+                                    <materialDesign:PackIcon  Foreground="White" Height="40" Width="30" Kind="AssignmentReturn" Margin="-5,0,-50,-1" VerticalAlignment="Center" ></materialDesign:PackIcon>
+                                </MenuItem.Icon>
+                                <MenuItem.Header>
+                                    <TextBlock  Foreground="White" FontSize="18" VerticalAlignment="Center" Margin="-10,0,-50,0"> Return</TextBlock>
+                                </MenuItem.Header>
+                            </MenuItem>
+                        </Menu>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
+            <Grid Grid.Row="1" Margin="0,0,0,-5">
+                <Grid x:Name="functions_title" VerticalAlignment="Top">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50*" />
+                            <ColumnDefinition Width="100*" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon Foreground="White" Kind="CodeBlockSquare" VerticalAlignment="Center" Height="40" Width="50" Grid.Column="0"/>
+                        <TextBlock Text="Functions" Grid.Column="1" FontSize="20"  Foreground="White" VerticalAlignment="Center"></TextBlock>
+                    </Grid>
+                </Grid>
+                <Border Margin="0,40,0,50" BorderThickness="0,0,1,0"  BorderBrush="#FF1F1F1F">
+                    <ScrollViewer x:Name="func_list" >
+                        <StackPanel Width="200" Orientation="Vertical" Name="funcMenu"/>
+                    </ScrollViewer>
+                </Border>
+                <Button BorderBrush="{x:Null}" HorizontalAlignment="Left" Name="import" Background="Transparent" Width="200" Height="50" VerticalAlignment="Bottom" HorizontalContentAlignment="Left" Click="import_Click" Margin="0,0,0,0">
+                    <Grid HorizontalAlignment="Left" Margin="-17,0,0,0" Width="200">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50*" />
+                            <ColumnDefinition Width="100*" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon Foreground="White" Kind="Import" VerticalAlignment="Center" Height="40" Width="50" Grid.Column="0"/>
+                        <TextBlock Text="Import" Grid.Column="1" FontSize="20"  Foreground="White" VerticalAlignment="Center"></TextBlock>
+                    </Grid>
+                </Button>
+            </Grid>
+        </Grid>
+        <Canvas x:Name="workSheet" Background="#FF1A1A1A" Visibility="Hidden" MinWidth="650">
+            <!--Visibility="Hidden"-->
+            <Grid Width="{Binding ElementName=workSheet, Path=ActualWidth}" Name="header" Panel.ZIndex="200"  Background="#FF1F1F1F" VerticalAlignment="Top" HorizontalAlignment="Stretch" Visibility="Visible">
+                <TextBlock x:Name="projName" Margin="0,0,20,0" FontSize="25"  Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
+                <Button Click="saveButton_Click" BorderBrush="{x:Null}" HorizontalAlignment="Left" Name="save" Background="#FF1F1F1F" Width="200" Height="50" VerticalAlignment="Top"  Margin="0,0,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon Foreground="White" Kind="ContentSave" VerticalAlignment="Center" Height="40" Width="50" Grid.Column="0"/>
+                        <TextBlock Text="Save" Grid.Column="1" FontSize="20"  Foreground="White" VerticalAlignment="Center"></TextBlock>
+                    </Grid>
+                </Button>
+                <Button Click="dataLine_Click" Visibility="Hidden" BorderBrush="{x:Null}" HorizontalAlignment="Left" Name="dataLine" Background="#FF1F1F1F" Width="200" Height="50" VerticalAlignment="Top"  Margin="700,0,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon Foreground="#144b9f" Kind="Database" VerticalAlignment="Center" Height="40" Width="50" Grid.Column="0"/>
+                        <TextBlock Text="Data Line" Grid.Column="1" FontSize="20"  Foreground="#144b9f" VerticalAlignment="Center"></TextBlock>
+                    </Grid>
+                </Button>
+                <Button Click="signalLine_Click" BorderBrush="{x:Null}" HorizontalAlignment="Left" Name="signalLine" Background="#FF1F1F1F" Width="200" Height="50" VerticalAlignment="Top"  Margin="700,0,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon Foreground="#c70e20" Kind="Connection" VerticalAlignment="Center" Height="40" Width="50" Grid.Column="0"/>
+                        <TextBlock Text="Control Line" Grid.Column="1" FontSize="20"  Foreground="#c70e20" VerticalAlignment="Center"></TextBlock>
+                    </Grid>
+                </Button>
+                <Button Margin="200,0,0,0" Click="generate_Click" BorderBrush="{x:Null}" HorizontalAlignment="Left" x:Name="save_Copy" Background="#FF1F1F1F" Width="200" Height="50" VerticalAlignment="Center">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon Foreground="White" Kind="Cog" VerticalAlignment="Center" Height="40" Width="50" Grid.Column="0"/>
+                        <TextBlock Text="Generate" Grid.Column="1" Foreground="White" FontSize="20" VerticalAlignment="Center"/>
+                    </Grid>
+                </Button>
+                <CheckBox Margin="400,0,0,0"  Style="{StaticResource CheckBoxTemplate}" Width="150" HorizontalAlignment="Left" Name="makeFile" Checked="makeFile_Checked" Unchecked="makeFile_Unchecked">
+                    <TextBlock Text="Makefile" Margin="20,0,0,0" Grid.Column="1" Foreground="White" FontSize="20" VerticalAlignment="Center"/>
+                </CheckBox>
+                <CheckBox Margin="550,0,0,0"  Style="{StaticResource CheckBoxTemplate}" Width="150" HorizontalAlignment="Left" Name="mainGen" Checked="mainGen_Checked" Unchecked="mainGen_Unchecked">
+                    <TextBlock Text="Main" Margin="20,0,0,0" Grid.Column="1" Foreground="White" FontSize="20" VerticalAlignment="Center"/>
+                </CheckBox>
+            </Grid>
+        </Canvas>
+    </Grid>
+</Window>

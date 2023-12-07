@@ -1,0 +1,102 @@
+﻿<UserControl x:Class="Viscon.UserControls.VariableView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Viscon.UserControls"
+             mc:Ignorable="d" 
+             Height="80" Width="300">
+    <UserControl.Resources>
+        <Style x:Key="bev" TargetType="TextBox">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0,0,0,3"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="FontFamily" Value="sans-serif"/>
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property ="Width" Value="160"/>
+            <Setter Property ="FontSize" Value="18"/>
+        </Style>
+        <Style x:Key="placeholder" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="FontFamily" Value="sans-serif"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Foreground" Value="LightGray"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property ="Width" Value="160"/>
+            <Setter Property ="FontSize" Value="18"/>
+        </Style>
+        <Style x:Key="adatok" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontFamily" Value="sans-serif"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property ="TextAlignment" Value="Center"/>
+            <Setter Property ="FontSize" Value="18"/>
+        </Style>
+        <Style x:Key="korok" TargetType="Border">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="CornerRadius" Value="25"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="Width" Value="25"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="3"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Resources>
+    <Border x:Name="asd" PreviewMouseMove="Border_MouseMove_1" MouseLeave="Border_MouseLeave" CornerRadius="10" BorderThickness="2" BorderBrush="Black" Width="180">
+        <Border.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FF282828"/>
+                <GradientStop Color="#FF3C3C3C" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.Background>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="35" />
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="90" />
+                <ColumnDefinition Width="125" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <CheckBox x:Name="IsParam" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Checked="IsParam_Checked" Unchecked="IsParam_Unchecked" >
+                <CheckBox.LayoutTransform>
+                    <ScaleTransform ScaleX="2" ScaleY="2" />
+                </CheckBox.LayoutTransform>
+            </CheckBox>
+            <Border CornerRadius="10" BorderThickness="3" Grid.Column="2" BorderBrush="Black" Margin="5,5,5,5">
+                <ComboBox SelectedIndex="0" Name="type" Foreground="White" Margin="5,0,5,-1" LostFocus="Selected_LostFocus">
+                    
+                    <ComboBoxItem Foreground="Black" Tag="0" Content="char"/>
+                    <ComboBoxItem Foreground="Black" Tag="1" Content="int"/>
+                    <ComboBoxItem Foreground="Black" Tag="2" Content="float"/>
+                    <ComboBoxItem Foreground="Black" Tag="3" Content="double"/>
+                    <ComboBoxItem Foreground="Black" Tag="4" Content="long"/>
+                    <ComboBoxItem Foreground="Black" Tag="5" Content="short"/>
+                    <ComboBoxItem Foreground="Black" Tag="6" Content="bool"/>
+                    <ComboBoxItem Foreground="Black" Tag="7" Content="string"/>
+
+                </ComboBox>
+            </Border>
+            <TextBlock Name="n" Grid.Column="3" Style="{StaticResource placeholder}" Width="105" Text="Name" Margin="5,7,5,5"/>
+            <TextBox Name="name" Grid.Column="3" Style="{StaticResource bev}" Width="105" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"  Margin="5,7,5,5"/>
+            <Grid HorizontalAlignment="Left" Grid.Row="1" Grid.ColumnSpan="4">
+                    <TextBlock Name="v" Style="{StaticResource placeholder}" Text="Value" Margin="5,7,5,5"/>
+                <TextBox Name="value" Style="{StaticResource bev}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"  Margin="5,7,5,5"/>
+                </Grid>
+
+            <Border Background="#FF326e8a" MouseDown="DataIn_MouseDown" x:Name="Data" Style="{StaticResource korok}"/>
+        </Grid>
+    </Border>
+</UserControl>
