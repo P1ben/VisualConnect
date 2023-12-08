@@ -153,7 +153,7 @@ namespace Viscon.UserControls
         }
 
         private void OutputSignal_MouseDown(object sender, MouseButtonEventArgs e)
-        {
+        {//Itt mindenképp van baj! Ez a kezelő a függvény visszatérési értékének van. Data Out jellegű lófasz.
             main_window.RegisterEndpoint(node.DataParams[2], ConnectionType.Data);
         }
 

@@ -50,6 +50,11 @@ namespace Viscon.UserControls
         public void SetNode(CompareBox node)
         {
             this.node = node;
+            if (node != null)
+            {
+                this.type.SelectedItem = this.type.Items.GetItemAt((int)node.arithOperator);
+                this.Negate.IsChecked = node.negated;
+            }
         }
 
         private void Border_MouseMove_1(object sender, MouseEventArgs e)
@@ -156,6 +161,22 @@ namespace Viscon.UserControls
         public double GetPosY()
         {
             return this.Margin.Top;
+        }
+
+        private void negate_checked(object sender, RoutedEventArgs e)
+        {
+            if (node != null)
+            {
+                node.negated = true;
+            }
+        }
+
+        private void negate_unchecked(object sender, RoutedEventArgs e)
+        {
+            if (node != null)
+            {
+                node.negated = false;
+            }
         }
     }
 }

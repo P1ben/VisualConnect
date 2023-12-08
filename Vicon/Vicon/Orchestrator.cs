@@ -242,24 +242,31 @@ namespace Viscon
         public static Node NextFlowItem(Node currentItem)
         {
             FlowParameter outputParam = currentItem.getOutputFlowParam();
-            if (outputParam == null) return null;
-            foreach (var x in workspace.flowConnections)
-            {
-                if (x.In == outputParam) return x.Out.parent;
-                if (x.Out == outputParam) return x.In.parent;
-            }
-            return null;
+            return NextFlowConnection(outputParam);
         }
 
         public static Node NextFlowConnection(FlowParameter currentItem)
         {
             if (currentItem == null) return null;
+            Node parent = null;
             foreach (var x in workspace.flowConnections)
             {
-                if (x.In == currentItem) return x.Out.parent;
-                if (x.Out == currentItem) return x.In.parent;
+                if (x.In == currentItem)
+                {
+                    parent = x.Out.parent;
+                    break;
+                }
+                if (x.Out == currentItem)
+                {
+                    parent = x.In.parent;
+                    break;
+                }
             }
-            return null;
+            if (parent.Generated)
+            {
+                parent = NextFlowConnection(parent.getOutputFlowParam());
+            }
+            return parent;
         }
         
 

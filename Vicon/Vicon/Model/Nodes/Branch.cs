@@ -5,6 +5,7 @@ using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Viscon.CCG;
 using Viscon.Model.Connectables;
 using Viscon.Model.Nodes.Enums;
 
@@ -68,7 +69,6 @@ namespace Viscon.Model.Nodes
         public override List<string> GenerateCode()
         {
             var lista= new List<string>();
-
             Node endOfIfNode=null;
 
             //Az igaz ágon lévő kód listája
@@ -83,20 +83,32 @@ namespace Viscon.Model.Nodes
             var falseLista = new List<string>();
             var falseNodeLista = new List<Node>();
             tmpNode = Orchestrator.NextFlowConnection(FlowOutFalse);
-            while (tmpNode != null)
+            if (tmpNode == null) commonEndPoint = FlowOutFalse;
+            else
             {
-                //Ha megvan az első közös elem akkor megáll.
-                if (trueNodeLista.Contains(tmpNode)){
-                    endOfIfNode = tmpNode;
-                    commonEndPoint = tmpNode.getOutputFlowParam();
-                    break;
+                while (tmpNode != null)
+                {
+                    //Ha megvan az első közös elem akkor megáll.
+                    if (trueNodeLista.Contains(tmpNode))
+                    {
+                        endOfIfNode = tmpNode;
+                        commonEndPoint = tmpNode.getOutputFlowParam();
+                        Generated = true;
+                        break;
+                    }
+                    falseNodeLista.Add(tmpNode);
+                    tmpNode = Orchestrator.NextFlowItem(tmpNode);
                 }
-                falseNodeLista.Add(tmpNode);
-                falseLista.AddRange(tmpNode.GenerateCode());
-                tmpNode=Orchestrator.NextFlowItem(tmpNode);
-            } 
+                if (!CGenerator.Warmup && tmpNode == null)
+                {
+                    falseNodeLista.RemoveAt(falseNodeLista.Count - 1);
+                }
 
-
+                foreach (var node in falseNodeLista)
+                {
+                    falseLista.AddRange(node.GenerateCode());
+                }
+            }
 
 
             List<string> outputLista = new List<string>();
@@ -110,7 +122,7 @@ namespace Viscon.Model.Nodes
 
             tmpNode = Orchestrator.NextFlowConnection(FlowOutTrue);
             if (tmpNode == null) return null;
-            while (tmpNode != endOfIfNode)
+            while (tmpNode != endOfIfNode && tmpNode!=this)
             {
                 foreach (string codeLine in tmpNode.GenerateCode())
                 {
@@ -120,40 +132,18 @@ namespace Viscon.Model.Nodes
 
 
 
-                tmpNode =Orchestrator.NextFlowItem(tmpNode) ;
+                tmpNode = Orchestrator.NextFlowItem(tmpNode) ;
             }
-            if (falseLista.Count> 0)
+            outputLista.Add("}");
+            if (falseLista.Count > 0)
             {
-                outputLista.Add("}");
                 outputLista.Add("else");
                 outputLista.Add("{");
+                outputLista.AddRange(falseLista.Select(x => x = "\t" + x));
+                outputLista.Add("}");
             }
-
-            tmpNode = Orchestrator.NextFlowConnection(FlowOutFalse);
-            if (tmpNode != null)
-            {
-                while (tmpNode != endOfIfNode)
-                {
-
-                    foreach (string codeLine in tmpNode.GenerateCode())
-                    {
-                        string indentedLine = "\t" + codeLine;
-                        outputLista.Add(indentedLine);
-                    }
-                    tmpNode = Orchestrator.NextFlowItem(tmpNode);
-                }
-                outputLista.Add("}\n");
-            }
-            else
-            {
-                outputLista.Add("}\n");
-            }
+            
             if (endOfIfNode!=null) outputLista.AddRange(endOfIfNode.GenerateCode());
-
-
-
-
-
             return outputLista;
         }
     }

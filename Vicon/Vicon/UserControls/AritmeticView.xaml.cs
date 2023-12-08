@@ -42,6 +42,10 @@ namespace Viscon.UserControls
         public void SetNode(Arithmetic node)
         {
             this.node = node;
+            if (node != null)
+            {
+                this.type.SelectedItem = this.type.Items.GetItemAt((int)node.arithOperator);
+            }
         }
 
         public AritmeticView(MainWindow _main_window)

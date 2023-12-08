@@ -52,7 +52,7 @@
                     <ComboBoxItem Foreground="Black" Tag="_XOR" Content="XOR" Selected="type_Selected"/>
                 </ComboBox>
             </Border>
-            <CheckBox x:Name="Negate" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <CheckBox x:Name="Negate" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="negate_checked" Unchecked="negate_unchecked">
                 <CheckBox.LayoutTransform>
                     <ScaleTransform ScaleX="2" ScaleY="2" />
                 </CheckBox.LayoutTransform>

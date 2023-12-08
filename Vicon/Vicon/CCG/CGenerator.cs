@@ -24,6 +24,8 @@ namespace Viscon.CCG
             "char", "int", "float", "double", "long", "short", "bool", "const char*", "void"
         };
 
+        public static bool Warmup = false;
+
         private static List<string> InitFunctions()
         {
             Orchestrator.GetFunctions().ForEach(x => x.AlreadyGenerated = false);
@@ -136,8 +138,10 @@ namespace Viscon.CCG
         private static void GenerateSource(string directory, string name, bool gen_main = false)
         {
             var nextNode = Orchestrator.GetBeginNode();
-            nextNode = Orchestrator.workspace.connectables[0];
+            //nextNode = Orchestrator.workspace.connectables[0];
             List<string> generatedCode = new List<string>();
+
+            Orchestrator.workspace.connectables.ForEach(x => x.Generated = false);
 
             generatedCode.Add($"#include \"{name}.h\"");
             generatedCode.Add("");
@@ -146,6 +150,21 @@ namespace Viscon.CCG
 
             generatedCode.AddRange(InitVariables().Select(x => "\t" + x));
             generatedCode.AddRange(InitFunctions().Select(x => "\t" + x));
+
+            // Generator Warmup Round
+            Warmup = true;
+            while (nextNode != null)
+            {
+                nextNode.GenerateCode();
+                nextNode = Orchestrator.NextFlowItem(nextNode);
+            }
+
+            // Reset environment
+            Orchestrator.workspace.connectables.ForEach(x => x.Generated = false);
+            nextNode = Orchestrator.GetBeginNode();
+            Warmup = false;
+
+            // Code Generation
             while (nextNode != null)
             {
                 var tmNode = nextNode.GenerateCode();
@@ -153,7 +172,6 @@ namespace Viscon.CCG
                 {
                     generatedCode.AddRange(tmNode.Select(x => "\t" + x));
                 }
-
                 nextNode = Orchestrator.NextFlowItem(nextNode);
             }
             generatedCode.Add("}");

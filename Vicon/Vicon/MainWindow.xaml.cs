@@ -473,8 +473,6 @@ namespace Viscon
             }
         }
 
-        // Sometimes the whole program crashes after load, it has something to do with WPF initialization
-        // no idea.
         private Point GetBorderCenter(Border border)
         {
             return border.TransformToAncestor(this).Transform(new Point(12.5, 12.5));

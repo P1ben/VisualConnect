@@ -49,8 +49,8 @@
                     <ComboBoxItem Foreground="Black" Tag="_PLUS" Content="+" Selected="type_Selected"/>
                     <ComboBoxItem Foreground="Black" Tag="_MINUS" Content="-" Selected="type_Selected"/>
                     <ComboBoxItem Foreground="Black" Tag="_PRODUCT" Content="*" Selected="type_Selected"/>
-                    <ComboBoxItem Foreground="Black" Tag="_DIVISION" Content="/" Selected="type_Selected"/>
                     <ComboBoxItem Foreground="Black" Tag="_MODULO" Content="%" Selected="type_Selected"/>
+                    <ComboBoxItem Foreground="Black" Tag="_DIVISION" Content="/" Selected="type_Selected"/>
                 </ComboBox>
             </Border>
             <Border Background="#FF326e8a" MouseLeftButtonDown="VariableA_MouseDown" x:Name="VariableA" Style="{StaticResource korok}" Grid.Column="0"/>

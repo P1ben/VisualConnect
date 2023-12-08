@@ -47,14 +47,15 @@
             </Grid.ColumnDefinitions>
             <Border CornerRadius="5" BorderThickness="3" Grid.Column="2" BorderBrush="Black" Margin="0,3,0,3">
                 <ComboBox SelectedIndex="0" FontSize="18" Name="type" Foreground="White"  Margin="5,-6,0,-1">
-                    <ComboBoxItem Foreground="Black" Tag="_GREATERTHAN" Content=">" Selected="type_Selected"/>
                     <ComboBoxItem Foreground="Black" Tag="_LESSTHAN" Content="&lt;" Selected="type_Selected"/>
-                    <ComboBoxItem Foreground="Black" Tag="_GREATEROREQ" Content=">=" Selected="type_Selected"/>
+                    <ComboBoxItem Foreground="Black" Tag="_GREATERTHAN" Content=">" Selected="type_Selected"/>
                     <ComboBoxItem Foreground="Black" Tag="_LESSOREQ" Content="&lt;=" Selected="type_Selected"/>
+                    <ComboBoxItem Foreground="Black" Tag="_GREATEROREQ" Content=">=" Selected="type_Selected"/>
                     <ComboBoxItem Foreground="Black" Tag="_EQ" Content="=" Selected="type_Selected"/>
+                    <ComboBoxItem Foreground="Black" Tag="_NEQ" Content="!=" Selected="type_Selected"/>
                 </ComboBox>
             </Border>
-            <CheckBox x:Name="Negate" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <CheckBox x:Name="Negate" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="negate_checked" Unchecked="negate_unchecked">
                 <CheckBox.LayoutTransform>
                     <ScaleTransform ScaleX="2" ScaleY="2" />
                 </CheckBox.LayoutTransform>

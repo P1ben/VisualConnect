@@ -28,6 +28,9 @@ namespace Viscon.Model.Nodes
 
         public abstract List<string> GenerateCode();
 
+        [XmlIgnore]
+        public bool Generated { get; set; } = false;
+
         public virtual NodeType TypeInformer()
         {
             return NodeType.None;

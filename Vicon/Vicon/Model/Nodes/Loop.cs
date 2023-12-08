@@ -70,6 +70,7 @@ namespace Viscon.Model.Nodes
 
         public override List<string> GenerateCode()
         {
+            this.Generated = true;
             var outputLista= new List<string>();
 
             var cond = Orchestrator.GetDataNames(LoopCondition);
@@ -78,7 +79,8 @@ namespace Viscon.Model.Nodes
             var tmpNode = Orchestrator.NextFlowConnection(LoopFlowOut);
             while(tmpNode != null && tmpNode != this && tmpNode.TypeInformer() != NodeType.End)
             {
-                foreach (string codeLine in tmpNode.GenerateCode())
+                var lista = tmpNode.GenerateCode();
+                foreach (string codeLine in lista)
                 {
                     string indentedLine = "\t" + codeLine;
                     outputLista.Add(indentedLine);

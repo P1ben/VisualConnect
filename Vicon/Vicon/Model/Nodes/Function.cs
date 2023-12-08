@@ -115,13 +115,8 @@ namespace Viscon.Model.Nodes
 
         public override List<string> GenerateCode()
         {
-            if (AlreadyGenerated)
+            if (AlreadyGenerated && Type != CDataTypes.VOID)
             {
-                if (Type == CDataTypes.VOID)
-                {
-                    return new List<string>() { "" };
-                }
-
                 return new List<string>() { $"function{ID}_retval" };
             }
             else
